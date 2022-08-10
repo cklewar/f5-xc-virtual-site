@@ -38,5 +38,13 @@ variable "f5xc_tenant" {
   type = string
 }
 
-
+module "f5xc_virtual_site" {
+  source                 = "./modules/f5xc/site/virtual"
+  f5xc_api_p12_file      = var.f5xc_api_p12_file
+  f5xc_api_url           = var.f5xc_api_url
+  f5xc_namespace         = "system"
+  f5xc_tenant            = var.f5xc_tenant
+  f5xc_virtual_site_name = format("%s-virtual-site-%s", var.project_prefix, var.project_suffix)
+  f5xc_virtual_site_type = "CUSTOMER_EDGE"
+}
 ````
