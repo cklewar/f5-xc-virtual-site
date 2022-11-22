@@ -30,4 +30,7 @@ module "f5xc_virtual_site" {
   f5xc_virtual_site_name                = format("%s-virtual-site-%s", var.project_prefix, var.project_suffix)
   f5xc_virtual_site_type                = "CUSTOMER_EDGE"
   f5xc_virtual_site_selector_expression = [ "site_mesh_group in (gcp-sites)" ]
+  providers                             = {
+    volterra = volterra.default
+  }
 }
