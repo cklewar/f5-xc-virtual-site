@@ -38,11 +38,20 @@ variable "f5xc_tenant" {
   type = string
 }
 
+provider "volterra" {
+  api_p12_file = var.f5xc_api_p12_file
+  url          = var.f5xc_api_url
+  alias        = "default"
+}
+
 module "f5xc_virtual_site" {
-  source                 = "./modules/f5xc/site/virtual"
-  f5xc_namespace         = "system"
-  f5xc_tenant            = var.f5xc_tenant
-  f5xc_virtual_site_name = format("%s-virtual-site-%s", var.project_prefix, var.project_suffix)
-  f5xc_virtual_site_type = "CUSTOMER_EDGE"
+  source                                = "./modules/f5xc/site/virtual"
+  f5xc_namespace                        = "shared"
+  f5xc_virtual_site_name                = format("%s-virtual-site-%s", var.project_prefix, var.project_suffix)
+  f5xc_virtual_site_type                = "CUSTOMER_EDGE"
+  f5xc_virtual_site_selector_expression = ["site_mesh_group in (gcp-sites)"]
+  providers                             = {
+    volterra = volterra.default
+  }
 }
 ````
